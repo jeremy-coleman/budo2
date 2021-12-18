@@ -1,0 +1,8 @@
+body {
+  background: #0ebbbb;
+}
+
+.box {
+  border-width: 5px;
+  border-color: blueviolet;
+}

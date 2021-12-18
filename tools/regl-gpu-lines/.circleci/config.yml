@@ -1,0 +1,49 @@
+version: 2.1
+
+defaults: &defaults
+  docker:
+    - image: cimg/python:2.7-node
+  working_directory: ~/regl-gpu-lines
+
+
+jobs:
+  prepare:
+    <<: *defaults
+    steps:
+      - checkout
+      - run: python --version
+      - run: npm install
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - regl-gpu-lines
+  test:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: npm run test
+  lint:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: npm run lint
+  test-render:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: npm run test-render
+
+workflows:
+  version: 2
+  default:
+    jobs:
+      - prepare
+      - lint:
+          requires:
+            - prepare
+      - test-render:
+          requires:
+            - prepare

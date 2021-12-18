@@ -1,0 +1,72 @@
+{
+  "name": "regl-gpu-lines",
+  "version": "2.2.1",
+  "description": "Pure GPU, instanced, screen-projected lines for regl",
+  "main": "dist/regl-gpu-lines.min.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rreusser/regl-gpu-lines.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rreusser/regl-gpu-lines/issues"
+  },
+  "scripts": {
+    "bundle": "npm run bundle:rollup && npm run bundle:minify && npm run bundle:minify:compat",
+    "bundle:minify": "terser -cm -o dist/regl-gpu-lines.min.js dist/regl-gpu-lines.js && node scripts/compress.js < dist/regl-gpu-lines.min.js > dist/tmp.js && mv dist/tmp.js dist/regl-gpu-lines.min.js",
+    "bundle:minify:compat": "terser -cm -o dist/regl-gpu-lines.compat.min.js dist/regl-gpu-lines.compat.js && node scripts/compress.js < dist/regl-gpu-lines.compat.min.js > dist/tmp.js && mv dist/tmp.js dist/regl-gpu-lines.compat.min.js",
+    "bundle:rollup": "mkdir -p dist && rollup -c",
+    "build:examples": "for i in examples/*.js; do node scripts/build-example $i; done",
+    "build:test-page": "node scripts/build-test-page.js",
+    "lint": "eslint src/*.js",
+    "lint-fix": "eslint src/*.js --fix",
+    "prepublishOnly": "npm run bundle && npm run test && npm run build:examples && npm run build:test-page",
+    "test": "npm run lint && npm run test-render && npm run test-render-prod",
+    "test-render": "cross-env ENV=development node test/render.js",
+    "test-render-prod": "cross-env ENV=production node test/render.js",
+    "serve-render-tests": "node scripts/serve-render-tests.js",
+    "start": "node scripts/serve-example.js"
+  },
+  "keywords": [
+    "regl",
+    "webgl",
+    "lines"
+  ],
+  "author": "Ricky Reusser",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "async": "^3.2.2",
+    "babelify": "^10.0.0",
+    "browserify": "^17.0.0",
+    "budo": "^11.6.4",
+    "controls-gui": "^2.0.0",
+    "controls-state": "^2.0.0",
+    "eslint": "^8.2.0",
+    "get-pixels": "^3.3.3",
+    "gl": "^4.9.2",
+    "gl-matrix": "^3.4.3",
+    "glob": "^7.2.0",
+    "hyperstream": "^1.2.2",
+    "insert-css": "^2.0.0",
+    "ndarray": "^1.0.19",
+    "ndarray-ops": "^1.2.2",
+    "ndarray-scratch": "^1.2.0",
+    "pixelmatch": "^5.2.1",
+    "raf": "^3.4.1",
+    "regl": "^2.1.0",
+    "regl-camera": "^2.1.1",
+    "rollup": "^2.58.3",
+    "save-pixels": "^2.3.6",
+    "simple-html-index": "^1.5.0",
+    "stream-to-string": "^1.2.0",
+    "string-to-stream": "^3.0.1",
+    "tape": "^5.3.1",
+    "terser": "^5.9.0",
+    "cross-env": "7.0.3"
+  }
+}

@@ -1,0 +1,9 @@
+the cli adds glslify and shader-reloader/transform by default, but the exported server doesnt
+
+fix that.
+
+hmm, so this should really be a default transform added to budo instead of adding budo to this
+
+the programs reference a cli , but they arent actually a cli app. they are just node-launchable apps that listen to stdin
+
+this is good though, because it provides an opportunity to merge cli args using subarg format from a config file

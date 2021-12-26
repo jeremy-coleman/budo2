@@ -4,7 +4,6 @@ add gulpy
 
 add cli standalone package
 
-
 add mdx support
 
 add ts transform support
@@ -38,3 +37,9 @@ remove unneccessary builtin transforms on the browserify emitter and move these 
 
 [major]
 multi fs ie: file, tar, zip, remote, git
+
+[minor]
+import map support. merge with package.json.browser options
+
+[minor]
+configurable prelude, with a preset default esm wrapper. explore module registry or babylon.scriptcomponent

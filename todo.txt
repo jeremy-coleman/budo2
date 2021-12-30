@@ -1,6 +1,7 @@
 explain why cjs is a better format for prebundling and esm is best for client, not build time.
 
 add gulpy
+add yerna
 
 add cli standalone package
 
@@ -43,3 +44,5 @@ import map support. merge with package.json.browser options
 
 [minor]
 configurable prelude, with a preset default esm wrapper. explore module registry or babylon.scriptcomponent
+
+

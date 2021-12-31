@@ -1,31 +1,46 @@
+var { Transform, PassThrough } = require("stream");
+let sucrase = require("sucrase");
+var sucrasify = configure();
 
-var {Transform, PassThrough} = require("stream");
-let sucrase = require("sucrase")
-var sucrasify = configure()
-
-module.exports = sucrasify
-module.exports.sucrasify = sucrasify
+module.exports = sucrasify;
+module.exports.sucrasify = sucrasify;
 module.exports.configure = configure;
 
-/** @type import('sucrase').Options */
-var sucraseConfig = file => ({
-  //transforms: ["typescript", "imports", "jsx", "react-hot-loader"],
-  transforms: ["typescript", "imports", "jsx"],
-  filePath: file,
-  //enableLegacyTypeScriptModuleInterop: true
-  enableLegacyBabel5ModuleInterop: true
-})
+var ProductionConfig = (file) => {
+  /** @type import('sucrase').Options */
+  let config = {
+    transforms: ["typescript", "imports", "jsx"],
+    production: true,
+    filePath: file,
+    //enableLegacyTypeScriptModuleInterop: true
+    enableLegacyBabel5ModuleInterop: true,
+  };
+  return config;
+};
 
-function configure() {
+var HotConfig = (file) => {
+  /** @type import('sucrase').Options */
+  let config = {
+    transforms: ["typescript", "imports", "jsx", "react-hot-loader"],
+    production: false,
+    filePath: file,
+    //enableLegacyTypeScriptModuleInterop: true
+    enableLegacyBabel5ModuleInterop: true,
+  };
+  return config;
+};
+
+function configure(options = { hot: false }) {
   return function (filename) {
     if (/\.[tj]sx?$/i.test(filename) === false) {
       return new PassThrough();
     }
-    const sucraseOptions = sucraseConfig(filename)
-    if (sucraseOptions === null) {
-      return PassThrough();
+    if (options.hot) {
+      return new SucraseStream(HotConfig(filename));
     }
-    return new SucraseStream(sucraseOptions);
+    else if (!options.hot) {
+      return new SucraseStream(ProductionConfig(filename));
+    }
   };
 }
 
@@ -45,21 +60,16 @@ class SucraseStream extends Transform {
     // Merge the buffer pieces after all are available
     const data = Buffer.concat(this._data).toString();
 
-    try{
-      let result = sucrase.transform(data, this._opts)
+    try {
+      let result = sucrase.transform(data, this._opts);
       var code = result !== null ? result.code : data;
       this.push(code);
       callback();
-    }
-    catch(e){
-      callback(e)
+    } catch (e) {
+      callback(e);
     }
   }
 }
-
-
-
-
 
 // transforms: Array<Transform>;
 // /**

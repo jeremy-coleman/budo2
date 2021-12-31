@@ -1,35 +1,56 @@
-# shader-reload-cli
+# shader-reload-cli/budo/glslify wombo combo
 
 [![experimental](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
 
-A simple GLSL development server for testing and expreimentation.
+explain why cjs is a better format for prebundling and esm is best for client, not build time.
 
-See [shader-reload](https://github.com/mattdesl/shader-reload) for details.
+add gulpy
+add yerna
+add cli standalone package
+add mdx support
+add ts transform support
 
-## Install
+[major]
+refactor all community transforms
+remove file ext check and replace with (yet to be created) transform factory
+consider unplugin but unlikely
+create abstract transform with a configure() option
+configure object properties brainstorming:
+---
+test: regexp (file extension test)
+include: glob
+exclude: glob
+---
 
-Use [npm](https://npmjs.com/) to install.
+the refactored transforms, using the default value that the originals had hard coded
 
-```sh
-npm install shader-reload-cli -g
-```
 
-## Usage
+[major]
+refactor module-deps
+remove global transforms
+give some more thought on regexp vs acorn for detective
+place to add acorn transforms
+this is also the entry for a fanout impl (change order in mdep)
+impl idea: tfilter globalTransforms and remove transforms
 
-Specify 
+[major]
+remove unneccessary builtin transforms on the browserify emitter and move these to independent default transforms
 
-```sh
-Usage:
-  shader-reload-cli entry [options]
 
-Examples:
-  shader-reload-cli src/index.js
-  shader-reload-cli src/index.js:bundle.js --open
-  shader-reload-cli src/index.js:bundle.js --dir public/
-```
 
-Underneath the hood, this is using [budo](https://github.com/mattdesl/budo) and its command-line options.
+[major]
+multi fs ie: file, tar, zip, remote, git
 
-## License
+[minor]
+import map support. merge with package.json.browser options
 
-MIT, see [LICENSE.md](http://github.com/mattdesl/shader-reload-cli/blob/master/LICENSE.md) for details.
+[minor]
+configurable prelude, with a preset default esm wrapper. explore module registry or babylon.scriptcomponent
+
+
+[notes]
+the shader-reload-cli is kind of useless now that budo has it by default .. so just use budo
+
+budo.cli provides an opportunity to merge cli args using subarg format from a config file (need to implement)
+
+THREE stuff doesnt work with recent versions of three. Not going to bother fixing it since it will likely break again in a matter of weeks

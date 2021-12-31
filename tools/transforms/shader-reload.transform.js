@@ -2,7 +2,7 @@ const staticModule = require("static-module")
 const through = require("through")
 const path = require("path")
 const escape = require("jsesc")
-const pumpify = require("pumpify")
+const pumpify = require("../streams/pumpify")
 
 //const glslifyConcat = require("../glslify-browser")
 const { updateShaderSource } = require("./shader-reload.server")

@@ -5,8 +5,8 @@ var path = require("path")
 var { EventEmitter } = require("events")
 var urlLib = require("url")
 var { spawn } = require("child_process")
-var openUrl = require("open")
-var xtend = require("xtend")
+
+var xtend = require("./#deps/xtend")
 var once = require("lodash/once")
 var debounce = require("lodash/debounce")
 var isMatch = require("micromatch")
@@ -14,23 +14,30 @@ var Chokidar = require("chokidar")
 
 var browserify = require("./browserify")
 var createWatchify = require("./watchify")
+var insertGlobals = require("./insert-module-globals")
 
-var concat = require("concat-stream")
-var stacked = require("stacked")
-var serveStatic = require("serve-static")
-var defaultIndex = require("simple-html-index")
-var pushState = require("connect-pushstate")
-var liveReload = require("inject-lr-script")
-var urlTrim = require("url-trim")
-var escapeHtml = require("escape-html")
-var bole = require("bole")
-var garnish = require("garnish")
-var onResHeaders = require("on-headers")
-var onResFinished = require("on-finished")
+var concat = require("./streams/concat-stream")
+var duplexer = require("./streams/duplexer2")
+var defaultIndex = require("./streams/simple-html-index")
 
-var parseShell = require("shell-quote").parse
-var insertGlobals = require("insert-module-globals")
-var duplexer = require("duplexer2")
+var openUrl = require("./#deps/open")
+var stacked = require("./#deps/stacked")
+var serveStatic = require("./#deps/serve-static")
+var pushState = require("./#deps/connect-pushstate")
+var liveReload = require("./#deps/inject-lr-script")
+var urlTrim = require("./#deps/url-trim")
+var escapeHtml = require("./#deps/escape-html")
+var bole = require("./#deps/bole")
+var garnish = require("./#deps/garnish")
+var onResHeaders = require("./#deps/on-headers")
+var onResFinished = require("./#deps/on-finished")
+var parseShell = require("./#deps/shell-quote").parse
+
+var WebSocketServer = require("ws").Server
+var isAbsolute = path.isAbsolute
+var color = require("./#deps/kolorist")
+
+
 var subarg = require("subarg")
 var glob = require("glob")
 var { Readable } = require("stream")
@@ -351,9 +358,7 @@ function stripAnsi(string) {
   return string.replace(ansiRegex(), "")
 }
 
-var WebSocketServer = require("ws").Server
-var isAbsolute = path.isAbsolute
-var color = require("kolorist")
+
 
 function createReloadServer(server, opts) {
   opts = opts || {}

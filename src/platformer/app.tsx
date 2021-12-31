@@ -1,3 +1,5 @@
+import "@babylonjs/loaders"
+import "@babylonjs/gui"
 import { Engine } from "@babylonjs/core/Engines"
 import { Game } from "./app/Game"
 

@@ -1,28 +1,35 @@
 var path = require("path")
-var mdeps = require("module-deps")
-var depsSort = require("deps-sort")
-var bpack = require("browser-pack")
-var insertGlobals = require("insert-module-globals")
-var syntaxError = require("syntax-error")
-var splicer = require("labeled-stream-splicer")
-var through = require("through2")
-var concat = require("concat-stream")
-var inherits = require("inherits")
-var {EventEmitter} = require("events")
-var xtend = require("xtend")
-var isArray = Array.isArray
-var defined = require("defined")
-var has = require("has")
-var sanitize = require("htmlescape").sanitize
-var shasum = require("shasum-object")
+var fs = require("fs")
+var { inherits } = require("util")
+var { EventEmitter } = require("events")
 var bresolve = require("browser-resolve")
 var resolve = require("resolve")
-var readonly = require("read-only-stream")
-var fs = require("fs")
-var path = require("path")
-var cachedPathRelative = require("cached-path-relative")
 
+//var cachedPathRelative = require("cached-path-relative")
+
+var cachedPathRelative = path.relative
+
+var mdeps = require("./module-deps")
+var bpack = require("./browser-pack")
+//var bpack = require("browser-pack-flat")
+
+var {syntaxError} = require("./syntax-error")
+
+var { depsSort, shasum, has, isArray, defined, xtend, sanitizeHTML } = require("./browserify.utils")
+
+var readonly = require("./streams/read-only-stream")
+var splicer = require("./streams/labeled-stream-splicer")
+var through = require("./streams/through2")
+var concat = require("./streams/concat-stream")
+
+var insertGlobals = require("./insert-module-globals")
 var builtins = require("./builtins.js")
+
+// var xtend = require("./#deps/xtend")
+// var isArray = Array.isArray
+// var defined = require("./#deps/defined")
+// var has = require("./#deps/has")
+// var sanitize = require("htmlescape").sanitize
 
 module.exports = Browserify
 
@@ -679,7 +686,7 @@ Browserify.prototype._recorder = function (opts) {
 Browserify.prototype._json = function () {
   return through.obj(function (row, enc, next) {
     if (/\.json$/.test(row.file)) {
-      var sanitizedString = sanitize(row.source)
+      var sanitizedString = sanitizeHTML(row.source)
       try {
         // check json validity
         JSON.parse(sanitizedString)
@@ -878,6 +885,7 @@ function isExternalModule(file) {
   var regexp = process.platform === "win32" ? /^(\.|\w:)/ : /^[\/.]/
   return !regexp.test(file)
 }
+
 function relativePath(from, to) {
   // Replace \ with / for OS-independent behavior
   return cachedPathRelative(from, to).replace(/\\/g, "/")

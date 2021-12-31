@@ -1,0 +1,27 @@
+{
+  "name": "mixamo-cli",
+  "version": "1.0.0",
+  "description": "",
+  "bin": "./index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "canvas": "^2.6.1",
+    "esm": "^3.2.25",
+    "eventtarget": "^0.1.0",
+    "minimist": "^1.2.5",
+    "three": "^0.120.1",
+    "tmp": "^0.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^14.10.1",
+    "husky": "^4.3.0",
+    "string-template": "^1.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "node -r esm scripts/updateReadme.js"
+    }
+  }
+}

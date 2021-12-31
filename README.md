@@ -47,6 +47,8 @@ import map support. merge with package.json.browser options
 [minor]
 configurable prelude, with a preset default esm wrapper. explore module registry or babylon.scriptcomponent
 
+[minor]
+replace shasum's createHash with wasm xxHash
 
 [notes]
 the shader-reload-cli is kind of useless now that budo has it by default .. so just use budo

@@ -22,6 +22,7 @@
     "regl": "^2.1.0"
   },
   "devDependencies": {
+    "micromatch":"4.0.4",
     "esbuild":"0.14.9",
     "acorn": "8.7.0",
     "acorn-node": "2.0.1",

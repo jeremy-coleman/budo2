@@ -1,6 +1,12 @@
 # shader-reload-cli/budo/glslify wombo combo
 
-[![experimental](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
+currently running 2 servers for app and shader playground.
+app is using esbuild to prebuild since babylon is so large, not really neccessary tho, browserify will bundle in ~10s
+
+you can hot reload shaders in the pg. try changing a glColorFrag, the frag shader will hot reload without resetting the vertex positions. pretty cool.
+
+
+notes for future me:
 
 explain why cjs is a better format for prebundling and esm is best for client, not build time.
 
@@ -16,11 +22,11 @@ remove file ext check and replace with (yet to be created) transform factory
 consider unplugin but unlikely
 create abstract transform with a configure() option
 configure object properties brainstorming:
----
+
 test: regexp (file extension test)
 include: glob
 exclude: glob
----
+
 
 the refactored transforms, using the default value that the originals had hard coded
 
